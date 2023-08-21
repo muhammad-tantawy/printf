@@ -2,25 +2,6 @@
 #include <stdarg.h>
 #include <stdlib.h>
 #include <unistd.h>
-
-int print_char(char **buffer, int *index, va_list args)
-{
-(*buffer)[(*index)++] = va_arg(args, int);
-return (1);
-}
-
-int print_string(char **buffer, int *index, va_list args)
-{
-char *str = va_arg(args, char *);
-int count = 0;
-for (int i = 0; str[i] != '\0'; i++)
-{
-(*buffer)[(*index)++] = str[i];
-count++;
-}
-return (count);
-}
-
 int print_percent(char **buffer, int *index)
 {
 (*buffer)[(*index)++] = '%';
