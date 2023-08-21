@@ -1,7 +1,5 @@
 #include "main.h"
-#include <stdarg.h>
-#include <stdlib.h>
-#include <unistd.h>
+
 /**
  *print_char - function prints characters
  *@buffer: variable used to store arg
@@ -38,6 +36,7 @@ int print_string(char **buffer, int *index, va_list args)
  *print_percent - function prints percentage
  *@buffer: variable used to store arg
  *@index: variable used as index
+ *@args: the argument holder
  *Return: returns 1
  */
 int print_percent(char **buffer, int *index, va_list args)
