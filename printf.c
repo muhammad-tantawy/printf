@@ -96,8 +96,7 @@ int _printf(const char *format, ...)
 	char *new_buffer, *buffer;
 	va_list args;
 
-	va_start(args, format);
-	buffer = malloc(buffer_size);
+	va_start(args, format), buffer = malloc(buffer_size);
 	if (!buffer)
 		return (-1);
 	for (i = 0; format[i]; i++)
@@ -108,7 +107,8 @@ int _printf(const char *format, ...)
 				if (format[i] == specifiers[j].c)
 				{
 					count += specifiers[j].f(&buffer, &index, args);
-					found = 1, break;
+					found = 1; 
+					break;
 				}
 			if (!found)
 				count += print_unknown(&buffer, &index, format[i]);
