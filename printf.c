@@ -75,8 +75,8 @@ int print_hex(char **buffer, int *index, va_list args)
  */
 int print_unknown(char **buffer, int *index, char c)
 {
-	(*buffer)[(*index)] = '%';
-	(*buffer)[(*index) + 1] = c;
+	(*buffer)[(*index)++] = '%';
+	(*buffer)[(*index)++] = c;
 	return (2);
 }
 
@@ -96,6 +96,7 @@ int _printf(const char *format, ...)
 	char *new_buffer;
 	va_list args;
 	char *buffer;
+	int found;
 
 	va_start(args, format);
 	buffer = malloc(buffer_size);
@@ -103,11 +104,22 @@ int _printf(const char *format, ...)
 		return (-1);
 	for (i = 0; format[i]; i++)
 		if (format[i] == '%')
+		{	
+			i++;
+			found = 0;
 			for (j = 0; specifiers[j].c; j++)
-				if (format[++i] == specifiers[j].c)
+				if (format[i] == specifiers[j].c)
+				{
 					count += specifiers[j].f(&buffer, &index, args);
+					found = 1;
+					break;
+				}
+			if (!found)
+				count += print_unknown(&buffer, &index, format[i]);
+		}
 				else
 					buffer[index++] = format[i], count++;
+
 				else if (index >= buffer_size - 1)
 				{
 					new_buffer = realloc(buffer, buffer_size *= 2);
