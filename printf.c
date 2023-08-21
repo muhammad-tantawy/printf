@@ -120,7 +120,7 @@ int _printf(const char *format, ...)
 				else
 					buffer[index++] = format[i], count++;
 
-				else if (index >= buffer_size - 1)
+				if (index >= buffer_size - 1)
 				{
 					new_buffer = realloc(buffer, buffer_size *= 2);
 					if (new_buffer)
