@@ -26,6 +26,7 @@ int print_string(char **buffer, int *index, va_list args)
 	char *str = va_arg(args, char *);
 	int count = 0;
 	int i;
+
 	for (i = 0; str[i] != '\0'; i++)
 	{
 		(*buffer)[(*index)++] = str[i];
@@ -39,9 +40,9 @@ int print_string(char **buffer, int *index, va_list args)
  *@index: variable used as index
  *Return: returns 1
  */
-
-int print_percent(char **buffer, int *index)
+int print_percent(char **buffer, int *index, va_list args)
 {
+	(void)args;
 	(*buffer)[(*index)++] = '%';
 	return (1);
 }
@@ -52,19 +53,14 @@ int print_percent(char **buffer, int *index)
  */
 int _printf(const char *format, ...)
 {
-	int buffer_size = 1024;
-	int index = 0;
-	char *new_buffer;
+	specifier_t specifiers[] = {{'c', print_char}, {'s', print_string},
+					{'%', print_percent}, {0, NULL}};
+	int i, j, count, index = 0, buffer_size = 1024;
+	char *new_buffer, *buffer;
 	va_list args;
-	char *buffer;
-	int count = 0;
-	int i;
-	
-	va_start(args, format);
-	va_start(args, format);
-       	buffer = malloc(buffer_size);
 
-       	buffer = malloc(buffer_size);
+	va_start(args, format);
+	buffer = malloc(buffer_size);
 	if (!buffer)
 		return (-1);
 	for (i = 0; format[i] != '\0'; i++)
@@ -72,20 +68,9 @@ int _printf(const char *format, ...)
 		if (format[i] == '%')
 		{
 			i++;
-			switch (format[i])
-					{
-						case 'c':
-							count += print_char(&buffer, &index, args);
-							break;
-						case 's':
-							count += print_string(&buffer, &index, args);
-							break;
-						case '%':
-							count += print_percent(&buffer, &index);
-							break;
-						default:
-							break;
-					}
+			for (j = 0; specifiers[j].c != 0; j++)
+				if (format[i] == specifiers[j].c)
+					count += specifiers[j].f(&buffer, &index, args);
 		}
 		else
 		{
