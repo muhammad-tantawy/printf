@@ -132,7 +132,17 @@ int _printf(const char *format, ...)
 	}
 	else
 		buffer[index++] = format[i], count++;
-	CHECK_BUFFER();
+	if (index >= buffer_size - 1)
+	{
+		new_buffer = realloc(buffer, buffer_size *= 2);
+		if (new_buffer)
+		buffer = new_buffer;
+		else
+		{
+			free(buffer);
+			return (-1);
+		}
+	}
 	write(1, buffer, index), free(buffer), va_end(args);
 	return (count);
 }

@@ -1,5 +1,6 @@
 #include "main.h"
 
+
 /**
  *print_char - function prints characters
  *@buffer: variable used to store arg
