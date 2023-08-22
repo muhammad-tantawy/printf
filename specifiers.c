@@ -25,6 +25,11 @@ int print_string(char **buffer, int *index, va_list args)
 	int count = 0;
 	int i;
 
+	
+	if (str == NULL)
+	{
+		str = "(null)";
+	}
 	for (i = 0; str[i] != '\0'; i++)
 	{
 		(*buffer)[(*index)++] = str[i];

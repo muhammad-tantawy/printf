@@ -116,6 +116,11 @@ int _printf(const char *format, ...)
 	va_start(args, format), buffer = malloc(buffer_size);
 	if (!buffer)
 		return (-1);
+	if (format == NULL)
+	{
+		free(buffer);
+		return (-1);
+	}
 	for (i = 0; format[i]; i++)
 		if (format[i] == '%')
 		{
