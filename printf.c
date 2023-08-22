@@ -107,7 +107,7 @@ int print_unknown(char **buffer, int *index, char c)
 int _printf(const char *format, ...)
 {
 	specifier_t specifiers[] = {{'c', print_char}, {'s', print_string},
-	{'%', print_percent}, {'d', print_int}, {'i', print_int},
+	{'%', print_percent},  {'d', print_int}, {'i', print_int},
 	{'p', print_address}, {'o', print_octal}, {'u', print_unsigned},
 	{'x', print_hex}, {'X', print_hex}, {0, NULL}};
 	int buffer_size = 1024, index = 0, count = 0, i = 0, j = 0, found = 0;
@@ -137,9 +137,6 @@ int _printf(const char *format, ...)
 	{
 		case 'd':
 		case 'i':
-		case 'c':
-		case 's':
-		case '%':
 		count += print_int(&buffer, &index, args);
 		break;
 
