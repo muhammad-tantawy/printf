@@ -40,6 +40,7 @@ int print_unsigned(char **buffer, int *index, va_list args)
 	unsigned int n = va_arg(args, unsigned int), count = 0;
 	char temp[10];
 	int i = 0;
+
 	if (n == 0)
 		(*buffer)[(*index)++] = '0', count++;
 	else
@@ -67,7 +68,7 @@ int print_hex(char **buffer, int *index, va_list args)
 	unsigned int n = va_arg(args, unsigned int), count = 0;
 	char hex[9];
 	int i = 0;
-	
+
 	if (n == 0)
 		(*buffer)[(*index)++] = '0', count++;
 	else
@@ -87,7 +88,7 @@ int print_hex(char **buffer, int *index, va_list args)
  *print_unknown - function prints unknown arguments passed to _printf
  *@buffer: variable used to store arg
  *@index: variable used as index
- *@args: the argument holder
+ *@c: character to check
  *Return: returns 2
  */
 int print_unknown(char **buffer, int *index, char c)
@@ -124,7 +125,7 @@ int _printf(const char *format, ...)
 				if (format[i] == specifiers[j].c)
 				{
 					count += specifiers[j].f(&buffer, &index, args);
-					found = 1; 
+					found = 1;
 					break;
 				}
 			if (!found)
