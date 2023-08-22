@@ -113,7 +113,6 @@ int _printf(const char *format, ...)
 	int buffer_size = 1024, index = 0, count = 0, i = 0, j = 0, found = 0;
 	char *new_buffer, *buffer;
 	va_list args;
-
 	va_start(args, format), buffer = malloc(buffer_size);
 	if (!buffer)
 		return (-1);
@@ -125,7 +124,7 @@ int _printf(const char *format, ...)
 				if (format[i] == specifiers[j].c)
 				{
 					count += specifiers[j].f(&buffer, &index, args);
-					found = 1;
+					found = 1; 
 					break;
 				}
 			if (!found)
@@ -147,3 +146,4 @@ int _printf(const char *format, ...)
 	write(1, buffer, index), free(buffer), va_end(args);
 	return (count);
 }
+
