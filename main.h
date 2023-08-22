@@ -4,6 +4,7 @@
 #include <stdarg.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <string.h>
 int print_char(char **buffer, int *index, va_list args);
 int _printf(const char *format, ...);
 int print_string(char **buffer, int *index, va_list args);

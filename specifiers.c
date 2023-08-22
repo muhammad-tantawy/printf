@@ -47,7 +47,16 @@ int print_string(char **buffer, int *index, va_list args)
  */
 int print_percent(char **buffer, int *index, va_list args)
 {
-	(void)args;
+	char *format;
+	char *p;
+        
+	(void)args;	
+	format= va_arg(args, char *);
+	if (format == NULL)
+		return (-1);
+	p = strchr(format, '%');
+	if (p != NULL && *(p + 1) != '\0')
+		return (-1);
 	(*buffer)[(*index)++] = '%';
 	return (1);
 }
