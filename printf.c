@@ -1,6 +1,4 @@
 #include "main.h"
-
-
 /**
  *print_octal - function prints octal numbers
  *@buffer: variable used to store arg
@@ -13,7 +11,6 @@ int print_octal(char **buffer, int *index, va_list args)
 	int i = 0;
 	unsigned int n = va_arg(args, unsigned int), count = 0;
 	char octal[11];
-
 	if (n == 0)
 		(*buffer)[(*index)++] = '0', count++;
 	else
@@ -40,7 +37,6 @@ int print_unsigned(char **buffer, int *index, va_list args)
 	unsigned int n = va_arg(args, unsigned int), count = 0;
 	char temp[10];
 	int i = 0;
-
 	if (n == 0)
 		(*buffer)[(*index)++] = '0', count++;
 	else
@@ -55,7 +51,6 @@ int print_unsigned(char **buffer, int *index, va_list args)
 	}
 	return (count);
 }
-
 /**
  *print_hex - function prints hexadecimals
  *@buffer: variable used to store arg
@@ -68,7 +63,6 @@ int print_hex(char **buffer, int *index, va_list args)
 	unsigned int n = va_arg(args, unsigned int), count = 0;
 	char hex[9];
 	int i = 0;
-
 	if (n == 0)
 		(*buffer)[(*index)++] = '0', count++;
 	else
@@ -83,7 +77,6 @@ int print_hex(char **buffer, int *index, va_list args)
 	}
 	return (count);
 }
-
 /**
  *print_unknown - function prints unknown arguments passed to _printf
  *@buffer: variable used to store arg
@@ -97,8 +90,6 @@ int print_unknown(char **buffer, int *index, char c)
 	(*buffer)[(*index)++] = c;
 	return (2);
 }
-
-
 /**
  *_printf - function mimics printf
  *@format: variable holds the format specifier
@@ -113,30 +104,33 @@ int _printf(const char *format, ...)
 	int buffer_size = 1024, index = 0, count = 0, i = 0, j = 0, found = 0;
 	char *new_buffer, *buffer;
 	va_list args;
-
 	va_start(args, format), buffer = malloc(buffer_size);
 	if (!buffer || !format)
 		return (-1);
 	for (i = 0; format[i]; i++)
-		if (format[i] == '%')
+	if (format[i] == '%')
+	{
+		i++, found = 0;
+	for (j = 0; specifiers[j].c; j++)
+		if (format[i] == specifiers[j].c)
 		{
-			i++, found = 0;
-			for (j = 0; specifiers[j].c; j++)
-				if (format[i] == specifiers[j].c)
-				{
-					count += specifiers[j].f(&buffer, &index, args), found = 1;
-					break;
-				}
-			if (!found)
-			{
-				count += print_unknown(&buffer, &index, format[i]);
-				if (format[i] != '\0')
-				i--;
-			}
+			count += specifiers[j].f(&buffer, &index, args), found = 1;
+			break;
 		}
+	if (!found)
+		count += print_unknown(&buffer, &index, format[i]);
+	}
 	else
 		buffer[index++] = format[i], count++;
-	
+
+	switch (format[++i])
+	{
+		case 'i':
+		count += print_int(&buffer, &index, args);
+		break;
+
+	}
+
 	if (index >= buffer_size - 1)
 	{
 		new_buffer = realloc(buffer, buffer_size *= 2);
