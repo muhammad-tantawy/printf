@@ -55,7 +55,7 @@ int print_percent(char **buffer, int *index, va_list args)
 	if (format == NULL)
 		return (-1);
 	p = strchr(format, '%');
-	if (p != NULL && *(p + 1) != '\0')
+	if (p != NULL && *(p + 1) != '\0' && *(p + 1) != ' ')
 		return (-1);
 	(*buffer)[(*index)++] = '%';
 	return (1);
