@@ -137,6 +137,8 @@ int _printf(const char *format, ...)
 	{
 		case 'd':
 		case 'i':
+		case 'c':
+		case 's':
 		count += print_int(&buffer, &index, args);
 		break;
 
