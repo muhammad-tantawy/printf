@@ -132,14 +132,6 @@ int _printf(const char *format, ...)
 	}
 	else
 		buffer[index++] = format[i], count++;
-	switch (format[++i])
-	{
-		case 'd':
-		case 'i':
-		count += print_int(&buffer, &index, args);
-		break;
-
-	}
 	if (index >= buffer_size - 1)
 	{
 		new_buffer = realloc(buffer, buffer_size *= 2);
