@@ -8,8 +8,8 @@
 int print_int(va_list args)
 {
 	int count = 0;
-	int n = va_arg(args, int);
-	int temp, size;
+	long int n = va_arg(args, int);
+	long int temp, size;
 
 	if (n < 0)
 		_putchar('-'), n = -n, count++;
