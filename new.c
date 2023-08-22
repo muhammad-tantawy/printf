@@ -25,6 +25,9 @@ int _printf(const char *format, ...)
     int count = 0;
     char c, *s;
 
+    if (!format || (format[0] == '%' && !format[1]))
+        return (-1);
+
     va_start(args, format);
     while (*format)
     {
