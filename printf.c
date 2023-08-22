@@ -118,18 +118,22 @@ int _printf(const char *format, ...)
 	if (!buffer || !format)
 		return (-1);
 	for (i = 0; format[i]; i++)
-	if (format[i] == '%')
-	{
-		i++, found = 0;
-	for (j = 0; specifiers[j].c; j++)
-		if (format[i] == specifiers[j].c)
+		if (format[i] == '%')
 		{
-			count += specifiers[j].f(&buffer, &index, args), found = 1;
-			break;
+			i++, found = 0;
+			for (j = 0; specifiers[j].c; j++)
+				if (format[i] == specifiers[j].c)
+				{
+					count += specifiers[j].f(&buffer, &index, args), found = 1;
+					break;
+				}
+			if (!found)
+			{
+				count += print_unknown(&buffer, &index, format[i]);
+				if (format[i] != '\0')
+				i--;
+			}
 		}
-	if (!found)
-		count += print_unknown(&buffer, &index, format[i]);
-	}
 	else
 		buffer[index++] = format[i], count++;
 	
