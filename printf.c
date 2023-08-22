@@ -135,7 +135,6 @@ int _printf(const char *format, ...)
 	
 	switch (format[++i])
 	{
-		case 'd':
 		case 'i':
 		count += print_int(&buffer, &index, args);
 		break;
