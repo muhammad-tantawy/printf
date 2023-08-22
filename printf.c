@@ -118,7 +118,11 @@ int _printf(const char *format, ...)
 			break;
 		}
 	if (!found)
+	{
 		count += print_unknown(&buffer, &index, format[i]);
+		if (format[i] != '\0')
+			i--;
+	}
 	}
 	else
 		buffer[index++] = format[i], count++;
