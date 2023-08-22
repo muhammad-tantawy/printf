@@ -118,7 +118,7 @@ int _printf(const char *format, ...)
 	if (!buffer || !format)
 		return (-1);
 	for (i = 0; format[i]; i++)
-	if (format[i] == '%')
+	if (format[i + 1] == '%')
 	{
 		i++, found = 0;
 	for (j = 0; specifiers[j].c; j++)
