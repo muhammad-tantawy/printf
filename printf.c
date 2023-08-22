@@ -10,15 +10,22 @@
  */
 int print_octal(char **buffer, int *index, va_list args)
 {
-	int i;
+	int i = 0;
 	unsigned int n = va_arg(args, unsigned int), count = 0;
+	char octal[11];
 
 	if (n == 0)
 		(*buffer)[(*index)++] = '0', count++;
 	else
-		for (i = 11; i >= 0; i--)
-			if ((n >> (i << 2)) & 0x7 || ((i == 0) && (n != 0)))
-				(*buffer)[(*index)++] = ((n >> (i << 2)) & 0x7) + '0', count++;
+	{
+		while (n > 0)
+		{
+			octal[i++] = (n % 8) + '0';
+			n /= 8;
+		}
+		while (--i >= 0)
+			(*buffer)[(*index)++] = octal[i], count++;
+	}
 	return (count);
 }
 /**
@@ -30,17 +37,21 @@ int print_octal(char **buffer, int *index, va_list args)
  */
 int print_unsigned(char **buffer, int *index, va_list args)
 {
-	unsigned int temp;
 	unsigned int n = va_arg(args, unsigned int), count = 0;
-
+	char temp[10];
+	int i = 0;
 	if (n == 0)
 		(*buffer)[(*index)++] = '0', count++;
 	else
-		for (temp = n; temp > 9; temp /= 10)
-			n *= 10;
-	while (n > 9)
-		(*buffer)[(*index)++] = n / 10 + '0', n %= 10, count++;
-	(*buffer)[(*index)++] = n + '0', count++;
+	{
+		while (n > 0)
+		{
+			temp[i++] = (n % 10) + '0';
+			n /= 10;
+		}
+	while (--i >= 0)
+		(*buffer)[(*index)++] = temp[i], count++;
+	}
 	return (count);
 }
 
@@ -53,16 +64,22 @@ int print_unsigned(char **buffer, int *index, va_list args)
  */
 int print_hex(char **buffer, int *index, va_list args)
 {
-	int i;
 	unsigned int n = va_arg(args, unsigned int), count = 0;
-	char *hex = "0123456789abcdef";
-
+	char hex[9];
+	int i = 0;
+	
 	if (n == 0)
 		(*buffer)[(*index)++] = '0', count++;
 	else
-		for (i = ((sizeof(n) << 3) - 4); i >= 0; i -= 4)
-			if ((n >> i) & 0xf || i == ((sizeof(n) << 3) - 4))
-				(*buffer)[(*index)++] = hex[(n >> i) & 0xf], count++;
+	{
+		while (n > 0)
+		{
+			hex[i++] = "0123456789abcdef"[n % 16];
+			n /= 16;
+		}
+	while (--i >= 0)
+		(*buffer)[(*index)++] = hex[i], count++;
+	}
 	return (count);
 }
 

@@ -84,12 +84,22 @@ int print_int(char **buffer, int *index, va_list args)
 int print_address(char **buffer, int *index, va_list args)
 {
 	unsigned long n = (unsigned long)va_arg(args, void *);
-	char *hex = "0123456789abcdef";
-	int count = 0, i;
+	char hex[17];
+	int i = 0, count = 0;
 
 	(*buffer)[(*index)++] = '0', (*buffer)[(*index)++] = 'x', count += 2;
-	for (i = (sizeof(n) << 3) - 4; i >= 0; i -= 4)
-		(*buffer)[(*index)++] = hex[(n >> i) & 0xf], count++;
+	if (n == 0)
+		(*buffer)[(*index)++] = '0', count++;
+	else
+	{
+		while (n > 0)
+		{
+			hex[i++] = "0123456789abcdef"[n % 16];
+			n /= 16;
+		}
+	while (--i >= 0)
+		(*buffer)[(*index)++] = hex[i], count++;
+	}
 	return (count);
 }
 
