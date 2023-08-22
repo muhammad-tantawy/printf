@@ -108,47 +108,31 @@ int _printf(const char *format, ...)
 {
 	specifier_t specifiers[] = {{'c', print_char}, {'s', print_string},
 	{'%', print_percent}, {'d', print_int}, {'i', print_int},
-	{'p', print_address}, {'o', print_octal},
-	{'u', print_unsigned}, {'x', print_hex}, {'X', print_hex}, {0, NULL}};
+	{'p', print_address}, {'o', print_octal}, {'u', print_unsigned},
+	{'x', print_hex}, {'X', print_hex}, {0, NULL}};
 	int buffer_size = 1024, index = 0, count = 0, i = 0, j = 0, found = 0;
 	char *new_buffer, *buffer;
 	va_list args;
+
 	va_start(args, format), buffer = malloc(buffer_size);
-	if (!buffer)
+	if (!buffer || !format)
 		return (-1);
-	if (format == NULL)
-	{
-		free(buffer);
-		return (-1);
-	}
 	for (i = 0; format[i]; i++)
-		if (format[i] == '%')
+	if (format[i] == '%')
+	{
+		i++, found = 0;
+	for (j = 0; specifiers[j].c; j++)
+		if (format[i] == specifiers[j].c)
 		{
-			i++, found = 0;
-			for (j = 0; specifiers[j].c; j++)
-				if (format[i] == specifiers[j].c)
-				{
-					count += specifiers[j].f(&buffer, &index, args);
-					found = 1; 
-					break;
-				}
-			if (!found)
-				count += print_unknown(&buffer, &index, format[i]);
+			count += specifiers[j].f(&buffer, &index, args), found = 1;
+			break;
 		}
-				else
-					buffer[index++] = format[i], count++;
-				if (index >= buffer_size - 1)
-				{
-					new_buffer = realloc(buffer, buffer_size *= 2);
-					if (new_buffer)
-						buffer = new_buffer;
-					else
-					{
-						free(buffer);
-						return (-1);
-					}
-				}
+	if (!found)
+		count += print_unknown(&buffer, &index, format[i]);
+	}
+	else
+		buffer[index++] = format[i], count++;
+	CHECK_BUFFER();
 	write(1, buffer, index), free(buffer), va_end(args);
 	return (count);
 }
-
