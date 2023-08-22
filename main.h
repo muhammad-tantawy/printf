@@ -16,7 +16,7 @@ int print_octal(char **buffer, int *index, va_list args);
 int print_unsigned(char **buffer, int *index, va_list args);
 int print_hex(char **buffer, int *index, va_list args);
 int print_unknown(char **buffer, int *index, char c);
-
+int print_int(char **buffer, int *index, va_list args);
 typedef struct specifier
 
 {
