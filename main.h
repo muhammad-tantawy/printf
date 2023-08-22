@@ -13,12 +13,23 @@ int print_address(char **buffer, int *index, va_list args);
 int print_octal(char **buffer, int *index, va_list args);
 int print_unsigned(char **buffer, int *index, va_list args);
 int print_hex(char **buffer, int *index, va_list args);
-int print_unknown(char **buffer,int *index,char c);
-#define CHECK_BUFFER() if (index >= buffer_size - 1) { new_buffer = realloc(buffer, buffer_size *= 2); if (new_buffer) buffer = new_buffer; else { free(buffer); return (-1); } }
+int print_unknown(char **buffer, int *index, char c);
+#define CHECK_BUFFER()
+if (index >= buffer_size - 1)
+{
+	new_buffer = realloc(buffer, buffer_size *= 2);
+	if (new_buffer)
+		buffer = new_buffer;
+	else
+	{
+		free(buffer);
+		return (-1);
+	}
+}
 typedef struct specifier
 
 {
-    char c;
-    int (*f)(char **, int *, va_list);
+	char c;
+	int (*f)(char **, int *, va_list);
 } specifier_t;
 #endif
